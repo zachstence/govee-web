@@ -1,3 +1,20 @@
-import type { GoveeDevice as GoveeTS_GoveeDevice } from "govee-ts/lib/device";
+export interface Rgb {
+    r: number;
+    g: number;
+    b: number;
+}
 
-export type GoveeDevice = Omit<GoveeTS_GoveeDevice, "govee" | "getState" | "turnOn" | "turnOff" | "setBrightness" | "setRGBColor" | "setHexColor" | "setColorTemperature">
+export interface DeviceState {
+    online: boolean;
+    power: boolean;
+    brightness: number;
+    color?: Rgb
+    colorTem?: number;
+}
+
+export interface GoveeDevice {
+    name: string;
+    model: string;
+    device: string;
+    state: DeviceState;
+}

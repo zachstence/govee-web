@@ -22,5 +22,26 @@
 
 
 <main>
-    <Devices devices={devices}/>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 8rem">Name</th>
+                <th style="width: 3rem">Model</th>
+                <th style="width: 8rem">Color</th>
+                <th style="width: 2rem">Power</th>
+                <th>Brightness</th>
+                <th>Temperature</th>
+            </tr>
+        </thead>
+        <tbody>
+            <Devices devices={devices}/>
+        </tbody>
+    </table>
 </main>
+
+
+<style>
+    table {
+        width: 100%;
+    }
+</style>

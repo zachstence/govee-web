@@ -1,10 +1,12 @@
 <script lang="ts">
     import { onMount } from "svelte";
+    import Slider from "@smui/slider"
+    import Switch from "@smui/switch"
 
     import type { GoveeDevice } from "../../types";
     import { hexToRgb } from "../../util/color";
+    import { round } from "../../util/round";
 
-    import Slider from "@smui/slider"
 
     export let device: GoveeDevice
 
@@ -15,19 +17,19 @@
     let temperature: number;
 
     onMount(async () => {
-        const res = await fetch(`/devices/${device.device}/get-state?model=${device.model}`);
+        const res = await fetch(`/devices/${device.device}/state?model=${device.model}`);
         const state = await res.json()
         // color = rgbToHex(state.color) // For some reason Govee API isn't returning color
         power = state.powerState === 'on' ? true : false;
         brightness = state.brightness;
-        temperature = state.colorTemInKelvin;
+        temperature = round(state.colorTem, 100);
         loading = false;
     });
 
     const setColor = async () => {
         const rgb = hexToRgb(color)
 
-        await fetch(`/devices/${device.device}/set-color`, {
+        await fetch(`/devices/${device.device}/color`, {
             method: "PUT",
             body: JSON.stringify({
                 model: device.model,
@@ -37,7 +39,7 @@
     }
 
     const setPower = async () => {
-        await fetch(`/devices/${device.device}/set-power`, {
+        await fetch(`/devices/${device.device}/power`, {
             method: "PUT",
             body: JSON.stringify({
                 model: device.model,
@@ -47,7 +49,7 @@
     }
 
     const setBrightness = async () => {
-        await fetch(`/devices/${device.device}/set-brightness`, {
+        await fetch(`/devices/${device.device}/brightness`, {
             method: "PUT",
             body: JSON.stringify({
                 model: device.model,
@@ -57,7 +59,7 @@
     }
 
     const setTemperature = async () => {
-        await fetch(`/devices/${device.device}/set-temperature`, {
+        await fetch(`/devices/${device.device}/temperature`, {
             method: "PUT",
             body: JSON.stringify({
                 model: device.model,
@@ -69,18 +71,33 @@
 </script>
 
 
-<div>
-    {#if loading}
-        Loading...
-    {:else}
-        {device.name}
-        {device.model}
+{#if loading}
+    Loading...
+{:else}
+    <tr>
+        <td>{device.name}</td>
+        <td>{device.model}</td>
 
-        <input type="color" bind:value={color} />
-        <button type="button" on:click={setColor}>Set Color</button>
-        <input type="checkbox" bind:checked={power} on:change={setPower} />
-        <!-- <input type="range" min="1" max="100" bind:value={brightness} on:change={setBrightness} /> -->
-        <Slider bind:value={brightness} min={1} max={100} step={1} discrete />
-        <input type="range" min="2000" max="9000" bind:value={temperature} on:change={setTemperature} />
-    {/if}
-</div>
+        <td>
+            <input type="color" bind:value={color} />
+            <button type="button" on:click={setColor}>Set Color</button>
+        </td>
+
+        <td>
+            <Switch bind:checked={power} on:SMUISwitch:change={setPower} />
+        </td>
+
+        <td>
+            Brightness
+            <Slider bind:value={brightness} min={1} max={100} step={1} discrete on:SMUISlider:change={setBrightness} />
+        </td>
+
+        <td>
+            {#if temperature}
+                Temperature
+                <Slider bind:value={temperature} min={2000} max={9000} step={100} discrete on:SMUISlider:change={setTemperature} />
+            {/if}
+        </td>
+        
+    </tr>
+{/if}

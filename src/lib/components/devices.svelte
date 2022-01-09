@@ -6,8 +6,6 @@
 </script>
 
 
-<div>
-    {#each devices as device}
-        <Device device={device} />
-    {/each}
-</div>
+{#each devices as device}
+    <Device device={device} />
+{/each}

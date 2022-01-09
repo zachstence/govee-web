@@ -1,8 +1,4 @@
-export interface Rgb {
-    r: number;
-    g: number;
-    b: number;
-}
+import type { Rgb } from "src/types";
 
 const HEX_REGEX = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/
 

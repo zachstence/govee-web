@@ -3,7 +3,7 @@
     import type { Load } from "@sveltejs/kit";
 
     export const load: Load = async ({ fetch }) => {
-        const devices = await fetch("/govee/devices")
+        const devices = await fetch("/devices")
         const json = await devices.json()
         return {
             props: {

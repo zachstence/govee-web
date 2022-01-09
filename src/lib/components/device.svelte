@@ -18,7 +18,7 @@
     const setColor = async () => {
         const rgb = hexToRgb(color)
 
-        await fetch(`/govee/set-color/${device.device}`, {
+        await fetch(`/devices/${device.device}/set-color`, {
             method: "PUT",
             body: JSON.stringify({
                 model: device.model,
@@ -28,7 +28,7 @@
     }
 
     const setPower = async () => {
-        await fetch(`/govee/set-power/${device.device}`, {
+        await fetch(`/devices/${device.device}/set-power`, {
             method: "PUT",
             body: JSON.stringify({
                 model: device.model,

@@ -3,7 +3,8 @@
 
     export let device: GoveeDevice
 
-    let color;
+    let color: string;
+    let power: boolean;
 
     function hexToRgb(hex) {
         var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -14,18 +15,24 @@
         } : null;
     }
 
-    
-    
-
     const setColor = async () => {
         const rgb = hexToRgb(color)
 
         await fetch(`/govee/set-color/${device.device}`, {
             method: "PUT",
             body: JSON.stringify({
-                device: device.device,
                 model: device.model,
                 color: rgb,
+            })
+        })
+    }
+
+    const setPower = async () => {
+        await fetch(`/govee/set-power/${device.device}`, {
+            method: "PUT",
+            body: JSON.stringify({
+                model: device.model,
+                power: power,
             })
         })
     }
@@ -39,4 +46,5 @@
 
     <input type="color" bind:value={color} />
     <button type="button" on:click={setColor}>Set Color</button>
+    <input type="checkbox" bind:checked={power} on:change={setPower} />
 </div>

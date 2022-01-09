@@ -4,10 +4,10 @@ import { GoveeClient } from "../../../govee";
 
 export const put: RequestHandler = async (request) => {
     const device = request.params.device
-    const { model, color } = JSON.parse(request.body as string);
+    const { model, power } = JSON.parse(request.body as string);
 
     try {
-        await GoveeClient.setColor(device, model, color)
+        await GoveeClient.setPower(device, model, power)
     } catch (e) {
         console.error(e)
     }

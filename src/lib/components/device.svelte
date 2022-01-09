@@ -1,8 +1,10 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    
+
     import type { GoveeDevice } from "../../types";
     import { hexToRgb } from "../../util/color";
+
+    import Slider from "@smui/slider"
 
     export let device: GoveeDevice
 
@@ -77,7 +79,8 @@
         <input type="color" bind:value={color} />
         <button type="button" on:click={setColor}>Set Color</button>
         <input type="checkbox" bind:checked={power} on:change={setPower} />
-        <input type="range" min="1" max="100" bind:value={brightness} on:change={setBrightness} />
+        <!-- <input type="range" min="1" max="100" bind:value={brightness} on:change={setBrightness} /> -->
+        <Slider bind:value={brightness} min={1} max={100} step={1} discrete />
         <input type="range" min="2000" max="9000" bind:value={temperature} on:change={setTemperature} />
     {/if}
 </div>

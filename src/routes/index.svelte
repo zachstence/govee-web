@@ -1,22 +1,26 @@
-<script context="module" lang="ts">
+<script lang="ts" context="module">
+    import Devices from "$lib/components/devices.svelte";
     import type { Load } from "@sveltejs/kit";
 
     export const load: Load = async ({ fetch }) => {
-        const res = await fetch("/test")
-        const json = await res.json()
+        const devices = await fetch("/govee/devices")
+        const json = await devices.json()
         return {
             props: {
-                apiKey: json.apiKey
+                devices: json
             }
         }
     }
 </script>
 
+
 <script lang="ts">
-    export let apiKey: string
+    import type { GoveeDevice } from "src/types";
+
+    export let devices: GoveeDevice[]
 </script>
 
 
 <main>
-    {apiKey}
+    <Devices devices={devices}/>
 </main>

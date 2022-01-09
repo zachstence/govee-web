@@ -5,6 +5,7 @@
 
     let color: string;
     let power: boolean;
+    let brightness: number;
 
     function hexToRgb(hex) {
         var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -32,7 +33,17 @@
             method: "PUT",
             body: JSON.stringify({
                 model: device.model,
-                power: power,
+                power,
+            })
+        })
+    }
+
+    const setBrightness = async () => {
+        await fetch(`/devices/${device.device}/set-brightness`, {
+            method: "PUT",
+            body: JSON.stringify({
+                model: device.model,
+                brightness,
             })
         })
     }
@@ -47,4 +58,5 @@
     <input type="color" bind:value={color} />
     <button type="button" on:click={setColor}>Set Color</button>
     <input type="checkbox" bind:checked={power} on:change={setPower} />
+    <input type="range" min="1" max="100" bind:value={brightness} on:change={setBrightness} />
 </div>

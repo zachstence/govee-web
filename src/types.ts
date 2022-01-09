@@ -8,7 +8,7 @@ export interface DeviceState {
     online: boolean;
     power: boolean;
     brightness: number;
-    color?: Rgb
+    color?: string
     colorTem?: number;
 }
 

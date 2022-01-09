@@ -4,7 +4,7 @@
     import Switch from "@smui/switch"
 
     import type { GoveeDevice } from "../../types";
-    import { hexToRgb } from "../../util/color";
+    import { hexToRgb, rgbToHex } from "../../util/color";
     import { round } from "../../util/round";
 
 
@@ -19,7 +19,7 @@
     onMount(async () => {
         const res = await fetch(`/devices/${device.device}/state?model=${device.model}`);
         const state = await res.json()
-        // color = rgbToHex(state.color) // For some reason Govee API isn't returning color
+        color = rgbToHex(state.color) // For some reason Govee API isn't returning color
         power = state.powerState === 'on' ? true : false;
         brightness = state.brightness;
         temperature = round(state.colorTem, 100);

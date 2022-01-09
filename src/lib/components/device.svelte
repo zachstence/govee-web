@@ -1,7 +1,8 @@
 <script lang="ts">
-    import type { GoveeDevice } from "src/types";
     import { onMount } from "svelte";
-import Devices from "./devices.svelte";
+    
+    import type { GoveeDevice } from "../../types";
+    import { hexToRgb } from "../../util/color";
 
     export let device: GoveeDevice
 
@@ -14,21 +15,12 @@ import Devices from "./devices.svelte";
     onMount(async () => {
         const res = await fetch(`/devices/${device.device}/get-state?model=${device.model}`);
         const state = await res.json()
-        // color = state.color // For some reason Govee API isn't returning color
+        // color = rgbToHex(state.color) // For some reason Govee API isn't returning color
         power = state.powerState === 'on' ? true : false;
         brightness = state.brightness;
         temperature = state.colorTemInKelvin;
         loading = false;
     });
-
-    function hexToRgb(hex) {
-        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result ? {
-            r: parseInt(result[1], 16),
-            g: parseInt(result[2], 16),
-            b: parseInt(result[3], 16)
-        } : null;
-    }
 
     const setColor = async () => {
         const rgb = hexToRgb(color)

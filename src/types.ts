@@ -13,8 +13,8 @@ export interface DeviceState {
 }
 
 export interface GoveeDevice {
-    name: string;
-    model: string;
     device: string;
+    model: string;
+    deviceName: string;
     state: DeviceState;
 }

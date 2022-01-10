@@ -75,7 +75,7 @@
     Loading...
 {:else}
     <tr>
-        <td>{device.name}</td>
+        <td>{device.deviceName}</td>
         <td>{device.model}</td>
 
         <td>

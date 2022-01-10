@@ -1,21 +1,20 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import type { DeviceState } from "src/types";
-import { GoveeClient } from "../../../govee";
+import { API_KEY, BASE_URL } from "../../../constants";
 
 export const get: RequestHandler = async (request) => {
     const { device } = request.params;
     const model = request.url.searchParams.get("model");
 
-    try {
-        const res = await GoveeClient.getState(device, model)
-        const state = res.data;
-        
-        const body = state.properties.reduce((acc, v) => Object.assign(acc, v), {}) as DeviceState;
-        // @ts-expect-error This will be on the response
-        delete body.colorTemInKelvin
+    const res = await fetch(`${BASE_URL}/devices/state?device=${device}&model=${model}`, {
+        headers: {
+            "Govee-API-Key": API_KEY,
+            "Content-Type": "application/json",
+        },
+    })
+    const json = await res.json()
 
-        return { body: JSON.stringify(body) }
-    } catch (e) {
-        console.error(e)
+    const body = json.data.properties.reduce((acc, v) => Object.assign(acc, v), {});
+    return {
+        body: JSON.stringify(body)
     }
-};
+}

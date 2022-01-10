@@ -1,14 +1,23 @@
 import type { RequestHandler } from "@sveltejs/kit";
-
-import { GoveeClient } from "../../../govee";
+import { API_KEY, BASE_URL } from "../../../constants";
 
 export const put: RequestHandler = async (request) => {
     const device = request.params.device
     const { model, color } = JSON.parse(request.body as string);
 
-    try {
-        await GoveeClient.setColor(device, model, color)
-    } catch (e) {
-        console.error(e)
-    }
+    await fetch(`${BASE_URL}/devices/control`, {
+        method: "PUT",
+        headers: {
+            "Govee-API-Key": API_KEY,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            device,
+            model,
+            cmd: {
+                name: "color",
+                value: color,
+            }
+        })
+    })
 }

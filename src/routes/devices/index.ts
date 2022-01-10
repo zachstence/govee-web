@@ -1,16 +1,15 @@
 import type { RequestHandler } from "@sveltejs/kit";
-
-import { GoveeClient } from "../../govee";
+import { BASE_URL } from "../../constants";
 
 export const get: RequestHandler = async () => {
-    const goveeDevices = await GoveeClient.getDevices()
-    const devices = await Promise.all(goveeDevices.map(
-        async ({name, model, device, supportCmds, controllable, retrievable}) => {
-            return ({name, model, device, supportCmds, controllable, retrievable})
+    const res = await fetch(`${BASE_URL}/devices`, {
+        headers: {
+            "Govee-API-Key": import.meta.env.VITE_GOVEE_API_KEY as string,
         }
-    ))
-    
+    });
+    const json = await res.json()
+
     return {
-        body: devices
+        body: json.data.devices
     }
-};
+}

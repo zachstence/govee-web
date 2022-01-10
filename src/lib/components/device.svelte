@@ -13,15 +13,15 @@
     let loading: boolean = true;
     let color: string = "#FFFFFF";
     let power: boolean;
-    let brightness: number;
+    let brightness: number = 50;
     let temperature: number = 4000;
 
     onMount(async () => {
         const res = await fetch(`/devices/${device.device}/state?model=${device.model}`);
         const state = await res.json()
-        color = rgbToHex(state.color) // For some reason Govee API isn't returning color
+        color = rgbToHex(state.color)
         power = state.powerState === 'on' ? true : false;
-        brightness = state.brightness;
+        brightness = state.brightness ? state.brightness : 50;
         temperature = state.colorTem ? round(state.colorTem, 100) : 4000;
         loading = false;
     });
@@ -88,13 +88,13 @@
         </td>
 
         <td>
-            Brightness
-            <Slider bind:value={brightness} min={1} max={100} step={1} discrete on:SMUISlider:change={setBrightness} />
+            {#if brightness}
+                <Slider bind:value={brightness} min={1} max={100} step={1} discrete on:SMUISlider:change={setBrightness} />
+            {/if}
         </td>
 
         <td>
             {#if temperature}
-                Temperature
                 <Slider bind:value={temperature} min={2000} max={9000} step={100} discrete on:SMUISlider:change={setTemperature} />
             {/if}
         </td>

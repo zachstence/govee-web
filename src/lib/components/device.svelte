@@ -14,7 +14,7 @@
     let color: string = "#FFFFFF";
     let power: boolean;
     let brightness: number;
-    let temperature: number;
+    let temperature: number = 4000;
 
     onMount(async () => {
         const res = await fetch(`/devices/${device.device}/state?model=${device.model}`);
@@ -22,7 +22,7 @@
         color = rgbToHex(state.color) // For some reason Govee API isn't returning color
         power = state.powerState === 'on' ? true : false;
         brightness = state.brightness;
-        temperature = round(state.colorTem, 100);
+        temperature = state.colorTem ? round(state.colorTem, 100) : 4000;
         loading = false;
     });
 

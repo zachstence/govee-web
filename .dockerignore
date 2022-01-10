@@ -1,0 +1,9 @@
+node_modules
+npm-debug.log
+.eslintrc.cjs
+.git
+.env*
+.gitignore
+.npmrc
+.dockerignore
+.svelte-kit

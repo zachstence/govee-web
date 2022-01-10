@@ -10,3 +10,5 @@
 # govee-web
 
 A simple web interface for the Govee API to control wifi smart bulbs
+
+This is a work in progress! It is not production ready yet, but will be soon.
